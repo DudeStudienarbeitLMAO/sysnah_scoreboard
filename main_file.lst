@@ -1,42 +1,67 @@
 main_file                                                                                                               PAGE 1
-                         1     org 0000h
-                         2     repeat:
-0000 758081              3     mov p0,#10000001b ; Die Null
-0003 1134                4     acall delay
-0005 7580CF              5     mov p0,#11001111b ; Die Oins
-0008 1134                6     acall delay
-000A 758092              7     mov p0,#10010010b ; Die Zwo
-000D 1134                8     acall delay
-000F 758086              9     mov p0,#10000110b ; Die Drey
-0012 1134               10     acall delay
-0014 7580CC             11     mov p0,#11001100b ; Die Vier
-0017 1134               12     acall delay
-0019 7580A4             13     mov p0,#10100100b ; Die Fümf
-001C 1134               14     acall delay
-001E 7580A0             15     mov p0,#10100000b ; Die Serks
-0021 1134               16     acall delay
-0023 75808F             17     mov p0,#10001111b ; Die Sieben
-0026 1134               18     acall delay
-0028 758080             19     mov p0,#10000000b ; Die Agt
-002B 1134               20     acall delay
-002D 758084             21     mov p0,#10000100b ; Die Noin
-0030 1134               22     acall delay
-0032 80CC               23     sjmp repeat
-                        24     delay:
-                        25     ;mov r3,#010h
-                        26     ;l3:mov r2,#0ffh
-                        27     ;l2:mov r1,#0ffh
-0034 7910               28     mov r1,#010h
-0036 D9FE               29     l1:djnz r1,l1
-                        30     ;djnz r2,l2
-                        31     ;djnz r3,l3
-0038 22                 32     ret
+                 =1      1     include displays.asm
+                 =1      2     ; Add 'ret' to each display to stop looping
+                 =1      3     display_0_0:
+0019 758081      =1      4     mov p0,#10000001b ; Die Null
+001C 1114        =1      5     acall delay
+                 =1      6     display_0_1:
+001E 7580CF      =1      7     mov p0,#11001111b ; Die Oins
+0021 1114        =1      8     acall delay
+                 =1      9     display_0_2:
+0023 758092      =1     10     mov p0,#10010010b ; Die Zwo
+0026 1114        =1     11     acall delay
+                 =1     12     display_0_3:
+0028 758086      =1     13     mov p0,#10000110b ; Die Drey
+002B 1114        =1     14     acall delay
+                 =1     15     display_0_4:
+002D 7580CC      =1     16     mov p0,#11001100b ; Die Vier
+0030 1114        =1     17     acall delay
+                 =1     18     display_0_5:
+0032 7580A4      =1     19     mov p0,#10100100b ; Die Fümf
+0035 1114        =1     20     acall delay
+                 =1     21     display_0_6:
+0037 7580A0      =1     22     mov p0,#10100000b ; Die Serks
+003A 1114        =1     23     acall delay
+                 =1     24     display_0_7:
+003C 75808F      =1     25     mov p0,#10001111b ; Die Sieben
+003F 1114        =1     26     acall delay
+                 =1     27     display_0_8:
+0041 758080      =1     28     mov p0,#10000000b ; Die Agt
+0044 1114        =1     29     acall delay
+                 =1     30     display_0_9:
+0046 758084      =1     31     mov p0,#10000100b ; Die Noin
+0049 1114        =1     32     acall delay
+004B 80B3        =1     33     sjmp repeat ; remove to stop looping
+                        34     org 0000h
+                        35
+                        36
+                        37
+                        38     repeat:
+0000 1119               39     acall display_0_0
+0002 111E               40     acall display_0_1
+0004 1123               41     acall display_0_2
+0006 1128               42     acall display_0_3
+0008 112D               43     acall display_0_4
+000A 1132               44     acall display_0_5
+000C 1137               45     acall display_0_6
+000E 113C               46     acall display_0_7
+0010 1141               47     acall display_0_8
+0012 1146               48     acall display_0_9
+                        49     delay:
+                        50     ;mov r3,#010h
+                        51     ;l3:mov r2,#0ffh
+                        52     ;l2:mov r1,#0ffh
+0014 7910               53     mov r1,#010h
+0016 D9FE               54     l1:djnz r1,l1
+                        55     ;djnz r2,l2
+                        56     ;djnz r3,l3
+0018 22                 57     ret
 ****WARNING:Missing`END'directive
 ASSEMBLY COMPLETE, NO ERRORS FOUND, 1 WARNING
 
 
 ERROR SUMMARY:
-Line 32, WARNING:Missing`END'directive
+Line 57, WARNING:Missing`END'directive
 
 SYMBOL TABLE:
 ??MCU_8051_IDE . . . . . . . . . . .  N  NUMB  8051H  NOT USED
@@ -92,7 +117,17 @@ CPRL2. . . . . . . . . . . . . . . .  B  ADDR  00C8H  NOT USED
 CR . . . . . . . . . . . . . . . . .  B  ADDR  00DEH  NOT USED
 CT2. . . . . . . . . . . . . . . . .  B  ADDR  00C9H  NOT USED
 CY . . . . . . . . . . . . . . . . .  B  ADDR  00D7H  NOT USED
-DELAY. . . . . . . . . . . . . . . .  C  ADDR  0034H
+DELAY. . . . . . . . . . . . . . . .  C  ADDR  0014H
+DISPLAY_0_0. . . . . . . . . . . . .  C  ADDR  0019H
+DISPLAY_0_1. . . . . . . . . . . . .  C  ADDR  001EH
+DISPLAY_0_2. . . . . . . . . . . . .  C  ADDR  0023H
+DISPLAY_0_3. . . . . . . . . . . . .  C  ADDR  0028H
+DISPLAY_0_4. . . . . . . . . . . . .  C  ADDR  002DH
+DISPLAY_0_5. . . . . . . . . . . . .  C  ADDR  0032H
+DISPLAY_0_6. . . . . . . . . . . . .  C  ADDR  0037H
+DISPLAY_0_7. . . . . . . . . . . . .  C  ADDR  003CH
+DISPLAY_0_8. . . . . . . . . . . . .  C  ADDR  0041H
+DISPLAY_0_9. . . . . . . . . . . . .  C  ADDR  0046H
 DP0H . . . . . . . . . . . . . . . .  D  ADDR  0083H  NOT USED
 DP0L . . . . . . . . . . . . . . . .  D  ADDR  0082H  NOT USED
 DP1H . . . . . . . . . . . . . . . .  D  ADDR  0085H  NOT USED
@@ -130,7 +165,7 @@ IT1. . . . . . . . . . . . . . . . .  B  ADDR  008AH  NOT USED
 KBE. . . . . . . . . . . . . . . . .  D  ADDR  009DH  NOT USED
 KBF. . . . . . . . . . . . . . . . .  D  ADDR  009EH  NOT USED
 KBLS . . . . . . . . . . . . . . . .  D  ADDR  009CH  NOT USED
-L1 . . . . . . . . . . . . . . . . .  C  ADDR  0036H
+L1 . . . . . . . . . . . . . . . . .  C  ADDR  0016H
 OSCCON . . . . . . . . . . . . . . .  D  ADDR  0086H  NOT USED
 OV . . . . . . . . . . . . . . . . .  B  ADDR  00D2H  NOT USED
 P. . . . . . . . . . . . . . . . . .  B  ADDR  00D0H  NOT USED
