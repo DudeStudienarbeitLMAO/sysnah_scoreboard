@@ -1,0 +1,71 @@
+\documentclass[12pt,a4paper,oneside,titlepage,liststotoc,bibtotoc]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm,includehead,includefoot]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{acronym}
+\usepackage{listings}
+\usepackage{float}
+
+% Infos
+\newcommand{\titel}{Projektbericht}
+\newcommand{\untertitel}{Scoreboard}
+\newcommand{\studiengang}{Informatik}
+\newcommand{\studienrichtung}{Angewandte Informatik}
+\newcommand{\autorone}{Fabian Blatz}
+\newcommand{\autortwo}{Sven Baumann}
+\newcommand{\autorthree}{Marcel Bohrmann}
+\newcommand{\autorfour}{Christian Gutermann}
+\newcommand{\kurs}{TINF15B4}
+\newcommand{\abgabe}{3. Oktober 2017}
+\newcommand{\betreuerdhbw}{Prof. Dr. Ralph Lausen}
+\newcommand{\jahr}{2018}
+
+% Logos
+\newcommand{\logodhbw}{\includegraphics[width=6cm]{img/logos/dhbw}}
+
+% Abkürzungen
+\newcommand{\ua}{\mbox{u.\,a.\ }}
+\newcommand{\zb}{\mbox{z.\,B.\ }}
+\newcommand{\heisst}{\mbox{d.\,h.\ }}
+\newcommand{\bs}{$\backslash$}
+
+% Definition der Kopf- und Fußzeilen
+\fancyhf{}
+\fancyhead[R]{\sffamily \nouppercase{\leftmark}}
+\fancyfoot[C]{\sffamily \thepage}
+%\renewcommand{\chapterpagestyle}{scrheadings}
+
+\pagestyle{fancy}
+\onehalfspacing
+
+\begin{document}
+
+\include{content/uni/titelseite}
+
+\tableofcontents
+
+\include{content/einleitung}
+\include{content/grundlagen}
+\include{content/konzept}
+\include{content/implementation}
+\include{content/zusammenfassung}
+
+
+\begin{appendix}
+
+\bibliographystyle{unsrt}
+\raggedright
+\bibliography{references/bibliothek}
+
+\listoffigures
+%\listoftables
+
+\include{content/uni/acronyms}
+    
+\end{appendix}
+	
+\end{document}
