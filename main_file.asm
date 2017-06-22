@@ -17,26 +17,26 @@ mov P1, #00010001b
 mov r7, #00h
 mov r6, #00h
 
-meme:
-acall zeigen
+checkPorts:
+acall show
 JB P0.1, increaseleft
 JB P0.0, increaseright
-sjmp meme
+sjmp checkPorts
 
 increaseleft:
-JB P1.6, display40left
-JB P1.5, display30left
-JB P1.4, display15left
-acall meme
+JB P1.6, ledmulti40left
+JB P1.5, ledmulti30left
+JB P1.4, ledmulti15left
+acall checkPorts
 
 
 increaseright:
-JB P1.2, display40right
-JB P1.1, display30right
-JB P1.0, display15right
-acall meme
+JB P1.2, ledmulti40right
+JB P1.1, ledmulti30right
+JB P1.0, ledmulti15right
+acall checkPorts
 
-zeigen:
+show:
 mov DPTR, #table
 mov a, R6
 mov b, #0ah
@@ -59,10 +59,10 @@ mov a, r0
 xch a,b
 movc a, @a+dptr
 mov r4, a
-call display
+call ledmulti
 ret
 
-display:
+ledmulti:
 mov P3, R2
 clr P2.0
 setb P2.0
@@ -81,42 +81,42 @@ setb P2.3
 
 ret
 
-display15right:
+ledmulti15right:
 SETB P1.1
 clr P0.0
 mov R6, #0fh
-acall meme
+acall checkPorts
 
-display30right:
+ledmulti30right:
 SETB P1.2
 clr P0.0
 mov R6, #1eh
-acall meme
+acall checkPorts
 
-display40right:
+ledmulti40right:
 SETB P1.3
 clr P0.0
 mov R6, #28h
-acall meme
+acall checkPorts
 
 
-display15left:
+ledmulti15left:
 SETB P1.5
 clr P0.1
 mov R7, #0fh
-acall meme
+acall checkPorts
 
-display30left:
+ledmulti30left:
 SETB P1.6
 clr P0.1
 mov R7, #1eh
-acall meme
+acall checkPorts
 
-display40left:
+ledmulti40left:
 SETB P1.7
 clr P0.1
 mov R7, #28h
-acall meme
+acall checkPorts
 
 
 org 300h
