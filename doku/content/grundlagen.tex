@@ -2,6 +2,42 @@
 
 \section{Assembler}
 
+Ein Assembler ist eine Übersetzungssoftware für Assemblersprache in Maschinensprache bzw. Binärcode. Häufig wird jedoch auch die Assemblersprache an sich als Assembler bezeichnet.
+
+Assemblersprachen sind hardwarenahe Programmiersprachen. Sie werden auch als Programmiersprachen der zweiten Generation bezeichnet, da sie die Nachfolger der direkten Programmierung mit Zahlencodes sind. Assemblerbefehle sind mnemonische Symbole in Textform und werden mithilfe eines Assemblers direkt in Maschinenbefehle übersetzt. Hierbei repräsentiert ein Assemblerbefehl genau einen Maschinenbefehl und dient somit nur der Verständlichkeit für den Menschen. Programmiersprachen der dritten Genration bzw. Hochsprachen hingegen benötigen einen Compiler welcher die komplexen Programmanweisungen in mehrere Maschinenbefehle übersetzt. 
+
+Da sich die Befehlssätze von unterschiedlichen Prozessoren, Mikrocontrollern oder auch digitalen Signalprozessoren unterscheiden gibt es für verschiedene Computertypen auch darauf zugeschnittene Assemblersprachen.
+
+Assemblersprachen werden heute jedoch nur noch selten eingesetzt. Früher war die Programmierung in Assembler notwendig, um die knappen Ressourcen der Mikrocontroller optimal auszunutzen. Durch technische Fortschritte steigt die Leistungsfähigkeit der Chips jedoch immer weiter an, wodurch mittlerweile immer mehr C-Compiler auch in diesem Bereich die Assembler ablösen.~\cite{wiki_Assembler}
+
+\newpage 
+
 \section{Der 8051 Mikrocomputer}
 
+Der 8051 Mikrocontroller gehört zur Familie der MCS-51 8-Bit- Mikrocontroller von Intel, welche 1980 vorgestellt wurden. Der original 8051 ist zwar mittlerweile veraltet, jedoch gibt es hunderte Varianten (Derivate) davon, die teilweise durchaus auf dem aktuellen Stand der Technik sind.~\cite{wiki_MCS}
+
+Der allererste Mikroprozessor i4004 wurde 1970 von Intel gebaut. Auch die Mikroprozessoren wie der 8051 und 8086 wurden von der Intel Corporation entwickelt. Der Originale 8051 ist ein maskenprogrammierter Mikrocontroller und benötigt für einen Befehl mindestens 12 Takte. Befehls- und Datenspeicher sind logisch getrennt, auch wenn dieser über einen einzigen gemultiplexten externen Bus adressiert werden. Allerdings ist es umstritten ob es sich dabei um eine Harvard-Architektur oder eine Von Neumann-Architektur handelt. Mit steigender Beliebtheit des 8051 hat Intel den MCS-51- CPU-Kern an viele Halbleiterhersteller lizensiert um damit eine Basis für einen herstellerübergreifenden Industriestandard zu schaffen. Dies führte zu verschiedenen Versionen mit unterschiedlichen Geschwindigkeiten und on-chip RAM, auf denen jedoch auch 8051 Programme anderer Varianten laufen. ~\cite{wiki_MCS}~\cite{weller_Mikros}\\
+
+Kerndaten des Original 8051~\cite{microcontroller_8051}: 
+
+\begin{itemize}
+	\item jeweils bis zu 64 kB externer Daten- und Programmspeicher adressierbar
+	\item 128 Byte internes Ram (8052: 256 Byte)
+	\item 2 Timer/Counter (8052: 3 Timer/Counter)
+	\item 2 externe Interrupts
+	\item 4 8-bit I/O Ports, zwei davon für den Zugriff auf externen Speicher
+	\item Hardware UART
+\end{itemize}
+
+\newpage 
+
 \section{Entwicklungsumgebung MCU-8051 IDE}
+
+Die MCU-8051 DIE ist eine freie integrierte Entwicklungsumgebung für auf dem 8051 basierende Mikrocontroller. Sie unterstützt zwei Programmiersprachen: C und Assemblersprache. Ebenso verfügt sie über einen eigenen Simulator und Assembler.~\cite{wiki_MCU_8051_IDE}
+
+
+Abbildung 1: MCU-8051 IDE
+
+
+
+In der Bildschirmmitte (Abb. 1) befindet sich der Editor, in dem der auszuführende Code bearbeitet werden kann. Im unteren Teil der DIE werden Arbeitsspeicher, Register, Timer, sowie die Ports des simulierten Mikrocontrollers angezeigt. In dem kleinen Fenster wird eine LED Display simuliert, auf der die Anwendung dargestellt wird.
