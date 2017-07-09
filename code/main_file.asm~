@@ -19,11 +19,18 @@ mov r6, #00h
 
 checkPorts:
 acall show
+JB P0.2, resetgame
 JB P0.1, increaseleft
 JB P0.0, increaseright
 sjmp checkPorts
 
+resetgame:
+MOV R6, #00h
+MOV R7, #00h
+acall checkPorts
+
 increaseleft:
+JB P1.7, ledmultiwinleft
 JB P1.6, ledmulti40left
 JB P1.5, ledmulti30left
 JB P1.4, ledmulti15left
@@ -31,6 +38,7 @@ acall checkPorts
 
 
 increaseright:
+JB P1.3, ledmultiwinright
 JB P1.2, ledmulti40right
 JB P1.1, ledmulti30right
 JB P1.0, ledmulti15right
@@ -99,26 +107,35 @@ clr P0.0
 mov R6, #28h
 acall checkPorts
 
+ledmultiwinright:
+JNB P1.7, RIGHTWIN ;es steht x-40 mit x<=30
+acall checkPorts
+
+RIGHTWIN:
+SETB P0.6 ;satzpunkt für rechts in port0 schieben
+acall checkPorts
 
 ledmulti15left:
 SETB P1.5
 clr P0.1
 mov R7, #0fh
 acall checkPorts
-
 ledmulti30left:
 SETB P1.6
 clr P0.1
 mov R7, #1eh
 acall checkPorts
-
 ledmulti40left:
 SETB P1.7
 clr P0.1
 mov R7, #28h
 acall checkPorts
-
-
+ledmultiwinleft:
+JNB P1.3, WINLEFT
+acall checkPorts
+WINLEFT:
+SETB P0.7
+acall checkPorts
 org 300h
 table:
 db 11000000b
