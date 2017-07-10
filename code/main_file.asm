@@ -29,21 +29,6 @@ MOV R6, #00h
 MOV R7, #00h
 acall checkPorts
 
-increaseleft:
-JB P1.7, ledmultiwinleft
-JB P1.6, ledmulti40left
-JB P1.5, ledmulti30left
-JB P1.4, ledmulti15left
-acall checkPorts
-
-
-increaseright:
-JB P1.3, ledmultiwinright
-JB P1.2, ledmulti40right
-JB P1.1, ledmulti30right
-JB P1.0, ledmulti15right
-acall checkPorts
-
 show:
 mov DPTR, #table
 mov a, R6
@@ -88,6 +73,21 @@ clr P2.3
 setb P2.3
 
 ret
+
+increaseleft:
+JB P1.7, ledmultiwinleft
+JB P1.6, ledmulti40left
+JB P1.5, ledmulti30left
+JB P1.4, ledmulti15left
+acall checkPorts
+
+
+increaseright:
+JB P1.3, ledmultiwinright
+JB P1.2, ledmulti40right
+JB P1.1, ledmulti30right
+JB P1.0, ledmulti15right
+acall checkPorts
 
 ledmulti15right:
 SETB P1.1

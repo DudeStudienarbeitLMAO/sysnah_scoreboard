@@ -124,30 +124,35 @@ main_file                                                                       
                        120     clr P0.1
                        121     mov R7, #0fh
                        122     acall checkPorts
-                       123     ledmulti30left:
-                       124     SETB P1.6
-                       125     clr P0.1
-                       126     mov R7, #1eh
-                       127     acall checkPorts
-                       128     ledmulti40left:
-                       129     SETB P1.7
-                       130     clr P0.1
-                       131     mov R7, #28h
-                       132     acall checkPorts
-                       133     ledmultiwinleft:
-                       134     JNB P1.3, WINLEFT
-                       135     acall checkPorts
-                       136     WINLEFT:
-                       137     SETB P0.7
+                       123
+                       124     ledmulti30left:
+                       125     SETB P1.6
+                       126     clr P0.1
+                       127     mov R7, #1eh
+                       128     acall checkPorts
+                       129
+                       130     ledmulti40left:
+                       131     SETB P1.7
+                       132     clr P0.1
+                       133     mov R7, #28h
+                       134     acall checkPorts
+                       135
+                       136     ledmultiwinleft:
+                       137     JNB P1.3, WINLEFT
                        138     acall checkPorts
-                       139     org 300h
-                       140     table:
-0300 C0                141     db 11000000b
-0301 F9A4B0            142     db 11111001b, 10100100b, 10110000b
-0304 999282            143     db 10011001b, 10010010b, 10000010b
-0307 F88090            144     db 11111000b, 10000000b, 10010000b
-                       145
-                       146     end
+                       139
+                       140     WINLEFT:
+                       141     SETB P0.7
+                       142     acall checkPorts
+                       143
+                       144     org 300h
+                       145     table:
+0300 C0                146     db 11000000b
+0301 F9A4B0            147     db 11111001b, 10100100b, 10110000b
+0304 999282            148     db 10011001b, 10010010b, 10000010b
+0307 F88090            149     db 11111000b, 10000000b, 10010000b
+                       150
+                       151     end
 ASSEMBLY COMPLETE, NO ERRORS FOUND, 3 WARNINGS
 
 

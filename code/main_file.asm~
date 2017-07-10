@@ -120,22 +120,27 @@ SETB P1.5
 clr P0.1
 mov R7, #0fh
 acall checkPorts
+
 ledmulti30left:
 SETB P1.6
 clr P0.1
 mov R7, #1eh
 acall checkPorts
+
 ledmulti40left:
 SETB P1.7
 clr P0.1
 mov R7, #28h
 acall checkPorts
+
 ledmultiwinleft:
 JNB P1.3, WINLEFT
 acall checkPorts
+
 WINLEFT:
 SETB P0.7
 acall checkPorts
+
 org 300h
 table:
 db 11000000b
