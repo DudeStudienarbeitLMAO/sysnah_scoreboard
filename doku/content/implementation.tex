@@ -1,2 +1,45 @@
 \chapter{Implementation}
+Die Implementierung des Projekts findet in einer einzelnen Assemblerdatei statt, welche in verschiedene "Subroutinen" gegliedert ist.\\
+Die wichtigsten Subroutinen hierbei sind:
+\begin{itemize}
+	\item checkports
+	\item buttonpressed
+	\item Sowie die Routinen zur Anzeige des Punktestands
+\end{itemize}
 
+\subsection{Checkports}
+Checkports ist, wie der Name schon sagt, die Routine zur Ueberpruefung des Portstatus der einzelnen Taster.
+\begin{lstlisting}
+checkPorts:
+acall show
+JB F0, buttonpressed
+MOV C,P0.0
+JC increaseleft
+MOV C,P0.1
+JC increaseright
+MOV C, P0.2
+JC resetgame
+sjmp checkPorts
+\end{lstlisting}
+Da es sich hierbei ebenfalls um die "Hauptroutine" des Programms handelt, welche in regelmaessigen Abstaenden zur Laufzeit des Scoreboards ausgefuehrt wird, wird zu beginn der Punktestand ueber den Befehl "acall show" ausgefuehrt.\\
+Daraufhin wird der momentane Status der einzelnen Taster-Port-Bits in das Carry-Bit geschrieben, welches daraufhin ueber "JC" auf Ein- bzw. Ausgeschaltet (Also 1 oder 0) ueberprueft wird. Sollte eine 1 in C stehen, wird zur entsprechenden Inkrementierungsroutine des jeweiligen Spielers gesprungen.\\
+Sollte kein Taster gedrueckt worden sein, beginnt die Routine erneut.
+
+\subsection{Buttonpressed}
+Buttonpressed ist eine Behilfsroutine, welche durchlaufen wird, falls ein Taster gedrueckt, jedoch noch nicht losgelassen wurde.
+\begin{lstlisting}
+buttonpressed:
+acall show
+MOV C, P0.0
+JC buttonpressed
+MOV C, P0.1
+JC buttonpressed
+MOV C, P0.2
+JC buttonpressed
+CLR F0
+JMP checkports
+\end{lstlisting}
+Auch hier, da es eine Routine ist die potentiell fuer eine Laengere Zeit durchlaufen wird, wird zu beginn der momentane Punktestand ausgegeben. Daraufhin wird ueberprueft, ob einer der drei Taster noch immer gedrueckt, also auf 1 gesetzt, ist. Sollte dies der Fall sein, beginnt die Routine erneut.\\
+Werden alle Faelle durchlaufen, wird der Wert des Flag-0 (F0), welcher in dieser Implementierung dem Taster-Status entspricht, zurueck auf 0 gesetzt und das Programm springt zurueck in die Hauptroutine, "checkports", um ein weiterfuehren der Funktionalitaeten zu ermoeglichen.
+
+\subsection{Show und Increase}

@@ -1,5 +1,29 @@
 \chapter{Konzept}
+Die Nachfolgende Betrachtung dient der Analyse der benoetigten Module die zur korrekten Implementierung und Ausfuerhung des geplanten Scoreboards benoetigt werden.\\
 
 \section{Analyse}
+Zur vollstaendigen und korrekten Implementierung des geplanten Funktionsumpfangs sind folgende Komponenten von Noeten:
+\begin{itemize}
+	\item Anzeigemoeglichkeiten
+	\item Speichermoeglichkeiten fuer den momentanen Spielstand
+	\item Taster, um den Speicherstand zu inkrementieren, dekrementieren oder zurueckzusetzen
+	\item Ein Konzept, um die Tasterbedienung moeglichst bedienerfreundlich zu gestalten
+\end{itemize}
+
+\subsection{Anzeige}
+Fuer die Anzeige wurde ein Multiplex-LED-Display verwendet, welches folgende Eigenschaften aufweist:
+\begin{itemize}
+	\item 4x7 LED-Felder
+	\item Gesteuert ueber 12-Pins an 2 Ports, in diesem Fall P2 und P3
+\end{itemize}
+
+\subsection{Speicherstruktur}
+Hier einfuegen wie Spielstaende gespeichert werden, bitte, danke
+
+\subsection{Taster}
+Um das Scoreboard anzusteuern stehen dem Nutzer 3 Taster zur verfuegung, welche einem Punkt fuer den linken Spieler, dem rechten Spieler und einer Reset-Taste entsprechen. Da in der Simulationsumgebung leider keine Druckknoepfe sondern nur Schalter gibt, muss der Nutzer hier den Schalter eigenstaendig Ein- und wieder Ausschalten.
+
+\subsection{Tasterroutine}
+Da es nicht vom Nutzer erwartet werde kann, dass er es schafft, Taktgenau zwischen einzelnen Ueberpruefungen des Tasterstatus die Taste zu betaetigen, wurde eine Routine implementiert, um bei laengerer Tasterbetaetigung keine Mehrfachzaehlungen zu beguenstigen.
 
 \section{Programmentwurf}
