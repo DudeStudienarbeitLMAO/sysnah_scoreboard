@@ -12,36 +12,40 @@ ORG 20h
 init:
 mov IE, #10010010b
 mov tmod, #00000010b
-mov P0, #00h
 mov P1, #00010001b
 mov r7, #00h
 mov r6, #00h
+SETB P0.0
+SETB P0.1
+SETB P0.2
 
 checkPorts:
 acall show
-JB P0.2, resetgame
-JB P0.1, increaseleft
-JB P0.0, increaseright
+JB F0, buttonpressed
+MOV C,P0.0
+JC increaseleft
+MOV C,P0.1
+JC increaseright
+MOV C, P0.2
+JC resetgame
 sjmp checkPorts
+
+buttonpressed:
+acall show
+MOV C, P0.0
+JC buttonpressed
+MOV C, P0.1
+JC buttonpressed
+MOV C, P0.2
+JC buttonpressed
+CLR F0
+JMP checkports
 
 resetgame:
 MOV R6, #00h
 MOV R7, #00h
-acall checkPorts
-
-increaseleft:
-JB P1.7, ledmultiwinleft
-JB P1.6, ledmulti40left
-JB P1.5, ledmulti30left
-JB P1.4, ledmulti15left
-acall checkPorts
-
-
-increaseright:
-JB P1.3, ledmultiwinright
-JB P1.2, ledmulti40right
-JB P1.1, ledmulti30right
-JB P1.0, ledmulti15right
+mov P1, #00010001b
+SETB F0
 acall checkPorts
 
 show:
@@ -89,22 +93,37 @@ setb P2.3
 
 ret
 
+increaseleft:
+JB P1.7, ledmultiwinleft
+JB P1.6, ledmulti40left
+JB P1.5, ledmulti30left
+JB P1.4, ledmulti15left
+acall checkPorts
+
+
+increaseright:
+JB P1.3, ledmultiwinright
+JB P1.2, ledmulti40right
+JB P1.1, ledmulti30right
+JB P1.0, ledmulti15right
+acall checkPorts
+
 ledmulti15right:
 SETB P1.1
-clr P0.0
 mov R6, #0fh
+SETB F0
 acall checkPorts
 
 ledmulti30right:
 SETB P1.2
-clr P0.0
 mov R6, #1eh
+SETB F0
 acall checkPorts
 
 ledmulti40right:
 SETB P1.3
-clr P0.0
 mov R6, #28h
+SETB F0
 acall checkPorts
 
 ledmultiwinright:
@@ -117,20 +136,20 @@ acall checkPorts
 
 ledmulti15left:
 SETB P1.5
-clr P0.1
 mov R7, #0fh
+SETB F0
 acall checkPorts
 
 ledmulti30left:
 SETB P1.6
-clr P0.1
 mov R7, #1eh
+SETB F0
 acall checkPorts
 
 ledmulti40left:
 SETB P1.7
-clr P0.1
 mov R7, #28h
+SETB F0
 acall checkPorts
 
 ledmultiwinleft:

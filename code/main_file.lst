@@ -1,7 +1,7 @@
 main_file                                                                                                               PAGE 1
                          1
                          2     cseg at 0h
-                         3     ajmp init
+0000 0120                3     ajmp init
                          4     cseg at 100h
                          5
                          6
@@ -12,154 +12,169 @@ main_file                                                                       
                         10
                         11     ORG 20h
                         12     init:
-                        13     mov IE, #10010010b
-                        14     mov tmod, #00000010b
-                        15     mov P0, #00h
-                        16     mov P1, #00010001b
-                        17     mov r7, #00h
-                        18     mov r6, #00h
-                        19
-                        20     checkPorts:
-                        21     acall show
-                        22     JB P0.2, resetgame
-                        23     JB P0.1, increaseleft
-                        24     JB P0.0, increaseright
-                        25     sjmp checkPorts
-                        26
-                        27     resetgame:
-                        28     MOV R6, #00h
-                        29     MOV R7, #00h
-                        30     acall checkPorts
-                        31
-                        32     increaseleft:
-                        33     JB P1.7, ledmultiwinleft
-****ERROR:Labelistoofarfor8-bitrelativeaddressing.Trytodisablepeepholeoptimizationsiftheyareon.
-                        34     JB P1.6, ledmulti40left
-****ERROR:Labelistoofarfor8-bitrelativeaddressing.Trytodisablepeepholeoptimizationsiftheyareon.
-                        35     JB P1.5, ledmulti30left
-                        36     JB P1.4, ledmulti15left
-                        37     acall checkPorts
-                        38
-                        39
-                        40     increaseright:
-                        41     JB P1.3, ledmultiwinright
-                        42     JB P1.2, ledmulti40right
-                        43     JB P1.1, ledmulti30right
-                        44     JB P1.0, ledmulti15right
-                        45     acall checkPorts
-                        46
-                        47     show:
-                        48     mov DPTR, #table
-                        49     mov a, R6
-                        50     mov b, #0ah
-                        51     div ab
-                        52     mov R0, a
-                        53     movc a,@a+dptr
-                        54     mov r3, a
-                        55     mov a, r0
-                        56     xch a,b
-                        57     movc a, @a+dptr
-                        58     mov r2, a
-                        59     ;----------------
-                        60     mov a, R7
-                        61     mov b, #0ah
-                        62     div ab
-                        63     mov R0, a
-                        64     movc a,@a+dptr
-                        65     mov r5, a
-                        66     mov a, r0
-                        67     xch a,b
-                        68     movc a, @a+dptr
-                        69     mov r4, a
-                        70     call ledmulti
-                        71     ret
-                        72
-                        73     ledmulti:
-                        74     mov P3, R2
-                        75     clr P2.0
-                        76     setb P2.0
-                        77
-                        78     mov P3, R3
-                        79     clr P2.1
-                        80     setb P2.1
+0020 75A892             13     mov IE, #10010010b
+0023 758902             14     mov tmod, #00000010b
+0026 759011             15     mov P1, #00010001b
+0029 7F00               16     mov r7, #00h
+002B 7E00               17     mov r6, #00h
+002D D280               18     SETB P0.0
+002F D281               19     SETB P0.1
+0031 D282               20     SETB P0.2
+                        21
+                        22     checkPorts:
+0033 1163               23     acall show
+0035 20D50E             24     JB F0, buttonpressed
+0038 A280               25     MOV C,P0.0
+003A 4061               26     JC increaseleft
+003C A281               27     MOV C,P0.1
+003E 406B               28     JC increaseright
+0040 A282               29     MOV C, P0.2
+0042 4014               30     JC resetgame
+0044 80ED               31     sjmp checkPorts
+                        32
+                        33     buttonpressed:
+0046 1163               34     acall show
+0048 A280               35     MOV C, P0.0
+004A 40FA               36     JC buttonpressed
+004C A281               37     MOV C, P0.1
+004E 40F6               38     JC buttonpressed
+0050 A282               39     MOV C, P0.2
+0052 40F2               40     JC buttonpressed
+0054 C2D5               41     CLR F0
+0056 80DB               42     JMP checkports
+                        43
+                        44     resetgame:
+0058 7E00               45     MOV R6, #00h
+005A 7F00               46     MOV R7, #00h
+005C 759011             47     mov P1, #00010001b
+005F D2D5               48     SETB F0
+0061 1133               49     acall checkPorts
+                        50
+                        51     show:
+0063 900300             52     mov DPTR, #table
+0066 EE                 53     mov a, R6
+0067 75F00A             54     mov b, #0ah
+006A 84                 55     div ab
+006B F8                 56     mov R0, a
+006C 93                 57     movc a,@a+dptr
+006D FB                 58     mov r3, a
+006E E8                 59     mov a, r0
+006F C5F0               60     xch a,b
+0071 93                 61     movc a, @a+dptr
+0072 FA                 62     mov r2, a
+                        63     ;----------------
+0073 EF                 64     mov a, R7
+0074 75F00A             65     mov b, #0ah
+0077 84                 66     div ab
+0078 F8                 67     mov R0, a
+0079 93                 68     movc a,@a+dptr
+007A FD                 69     mov r5, a
+007B E8                 70     mov a, r0
+007C C5F0               71     xch a,b
+007E 93                 72     movc a, @a+dptr
+007F FC                 73     mov r4, a
+0080 120084             74     call ledmulti
+0083 22                 75     ret
+                        76
+                        77     ledmulti:
+0084 8AB0               78     mov P3, R2
+0086 C2A0               79     clr P2.0
+0088 D2A0               80     setb P2.0
                         81
-                        82     mov P3, R4
-                        83     clr P2.2
-                        84     setb P2.2
+008A 8BB0               82     mov P3, R3
+008C C2A1               83     clr P2.1
+008E D2A1               84     setb P2.1
                         85
-                        86     mov P3, R5
-                        87     clr P2.3
-                        88     setb P2.3
+0090 8CB0               86     mov P3, R4
+0092 C2A2               87     clr P2.2
+0094 D2A2               88     setb P2.2
                         89
-                        90     ret
-                        91
-                        92     ledmulti15right:
-                        93     SETB P1.1
-                        94     clr P0.0
-                        95     mov R6, #0fh
-                        96     acall checkPorts
-                        97
-                        98     ledmulti30right:
-                        99     SETB P1.2
-                       100     clr P0.0
-                       101     mov R6, #1eh
-                       102     acall checkPorts
+0096 8DB0               90     mov P3, R5
+0098 C2A3               91     clr P2.3
+009A D2A3               92     setb P2.3
+                        93
+009C 22                 94     ret
+                        95
+                        96     increaseleft:
+009D 209752             97     JB P1.7, ledmultiwinleft
+00A0 209647             98     JB P1.6, ledmulti40left
+00A3 20953C             99     JB P1.5, ledmulti30left
+00A6 209431            100     JB P1.4, ledmulti15left
+00A9 1133              101     acall checkPorts
+                       102
                        103
-                       104     ledmulti40right:
-                       105     SETB P1.3
-                       106     clr P0.0
-                       107     mov R6, #28h
-                       108     acall checkPorts
-                       109
-                       110     ledmultiwinright:
-                       111     JNB P1.7, RIGHTWIN ;es steht x-40 mit x<=30
-                       112     acall checkPorts
-                       113
-                       114     RIGHTWIN:
-                       115     SETB P0.6 ;satzpunkt für rechts in port0 schieben
-                       116     acall checkPorts
-                       117
-                       118     ledmulti15left:
-                       119     SETB P1.5
-                       120     clr P0.1
-                       121     mov R7, #0fh
-                       122     acall checkPorts
-                       123
-                       124     ledmulti30left:
-                       125     SETB P1.6
-                       126     clr P0.1
-                       127     mov R7, #1eh
-                       128     acall checkPorts
-                       129
-                       130     ledmulti40left:
-                       131     SETB P1.7
-                       132     clr P0.1
-                       133     mov R7, #28h
-                       134     acall checkPorts
-                       135
-                       136     ledmultiwinleft:
-                       137     JNB P1.3, WINLEFT
-                       138     acall checkPorts
-                       139
-                       140     WINLEFT:
-                       141     SETB P0.7
-                       142     acall checkPorts
-                       143
-                       144     org 300h
-                       145     table:
-0300 C0                146     db 11000000b
-0301 F9A4B0            147     db 11111001b, 10100100b, 10110000b
-0304 999282            148     db 10011001b, 10010010b, 10000010b
-0307 F88090            149     db 11111000b, 10000000b, 10010000b
-                       150
-                       151     end
-ASSEMBLY COMPLETE, NO ERRORS FOUND, 3 WARNINGS
+                       104     increaseright:
+00AB 209323            105     JB P1.3, ledmultiwinright
+00AE 209218            106     JB P1.2, ledmulti40right
+00B1 20910D            107     JB P1.1, ledmulti30right
+00B4 209002            108     JB P1.0, ledmulti15right
+00B7 1133              109     acall checkPorts
+                       110
+                       111     ledmulti15right:
+00B9 D291              112     SETB P1.1
+00BB 7E0F              113     mov R6, #0fh
+00BD D2D5              114     SETB F0
+00BF 1133              115     acall checkPorts
+                       116
+                       117     ledmulti30right:
+00C1 D292              118     SETB P1.2
+00C3 7E1E              119     mov R6, #1eh
+00C5 D2D5              120     SETB F0
+00C7 1133              121     acall checkPorts
+                       122
+                       123     ledmulti40right:
+00C9 D293              124     SETB P1.3
+00CB 7E28              125     mov R6, #28h
+00CD D2D5              126     SETB F0
+00CF 1133              127     acall checkPorts
+                       128
+                       129     ledmultiwinright:
+00D1 309702            130     JNB P1.7, RIGHTWIN ;es steht x-40 mit x<=30
+00D4 1133              131     acall checkPorts
+                       132
+                       133     RIGHTWIN:
+00D6 D286              134     SETB P0.6 ;satzpunkt für rechts in port0 schieben
+00D8 1133              135     acall checkPorts
+                       136
+                       137     ledmulti15left:
+00DA D295              138     SETB P1.5
+00DC 7F0F              139     mov R7, #0fh
+00DE D2D5              140     SETB F0
+00E0 1133              141     acall checkPorts
+                       142
+                       143     ledmulti30left:
+00E2 D296              144     SETB P1.6
+00E4 7F1E              145     mov R7, #1eh
+00E6 D2D5              146     SETB F0
+00E8 1133              147     acall checkPorts
+                       148
+                       149     ledmulti40left:
+00EA D297              150     SETB P1.7
+00EC 7F28              151     mov R7, #28h
+00EE D2D5              152     SETB F0
+00F0 1133              153     acall checkPorts
+                       154
+                       155     ledmultiwinleft:
+00F2 309302            156     JNB P1.3, WINLEFT
+00F5 1133              157     acall checkPorts
+                       158
+                       159     WINLEFT:
+00F7 D287              160     SETB P0.7
+00F9 1133              161     acall checkPorts
+                       162
+                       163     org 300h
+                       164     table:
+0300 C0                165     db 11000000b
+0301 F9A4B0            166     db 11111001b, 10100100b, 10110000b
+0304 999282            167     db 10011001b, 10010010b, 10000010b
+0307 F88090            168     db 11111000b, 10000000b, 10010000b
+                       169
+                       170     end
+ASSEMBLY COMPLETE, NO ERRORS FOUND, 1 WARNING
 
 
 ERROR SUMMARY:
 Line 7, WARNING:ThisORGhaslowervaluethanthepreviousone
-Line 34, ERROR:Labelistoofarfor8-bitrelativeaddressing.Trytodisablepeepholeoptimizationsiftheyareon.
-Line 36, ERROR:Labelistoofarfor8-bitrelativeaddressing.Trytodisablepeepholeoptimizationsiftheyareon.
 
 SYMBOL TABLE:
 ??MCU_8051_IDE . . . . . . . . . . .  N  NUMB  8051H  NOT USED
@@ -178,6 +193,7 @@ B. . . . . . . . . . . . . . . . . .  D  ADDR  00F0H
 BDRCON . . . . . . . . . . . . . . .  D  ADDR  009BH  NOT USED
 BDRCON_1 . . . . . . . . . . . . . .  D  ADDR  009CH  NOT USED
 BRL. . . . . . . . . . . . . . . . .  D  ADDR  009AH  NOT USED
+BUTTONPRESSED. . . . . . . . . . . .  C  ADDR  0046H
 CCAP0H . . . . . . . . . . . . . . .  D  ADDR  00FAH  NOT USED
 CCAP0L . . . . . . . . . . . . . . .  D  ADDR  00EAH  NOT USED
 CCAP1H . . . . . . . . . . . . . . .  D  ADDR  00FBH  NOT USED
@@ -204,7 +220,7 @@ CCF4 . . . . . . . . . . . . . . . .  B  ADDR  00DCH  NOT USED
 CCON . . . . . . . . . . . . . . . .  D  ADDR  00D8H  NOT USED
 CFINT. . . . . . . . . . . . . . . .  C  ADDR  0033H  NOT USED
 CH . . . . . . . . . . . . . . . . .  D  ADDR  00F9H  NOT USED
-CHECKPORTS . . . . . . . . . . . . .  C  ADDR  0030H
+CHECKPORTS . . . . . . . . . . . . .  C  ADDR  0033H
 CKCON. . . . . . . . . . . . . . . .  D  ADDR  008FH  NOT USED
 CKCON0 . . . . . . . . . . . . . . .  D  ADDR  008FH  NOT USED
 CKRL . . . . . . . . . . . . . . . .  D  ADDR  0097H  NOT USED
@@ -235,13 +251,13 @@ EXEN2. . . . . . . . . . . . . . . .  B  ADDR  00CBH  NOT USED
 EXF2 . . . . . . . . . . . . . . . .  B  ADDR  00CEH  NOT USED
 EXTI0. . . . . . . . . . . . . . . .  C  ADDR  0003H  NOT USED
 EXTI1. . . . . . . . . . . . . . . .  C  ADDR  0013H  NOT USED
-F0 . . . . . . . . . . . . . . . . .  B  ADDR  00D5H  NOT USED
+F0 . . . . . . . . . . . . . . . . .  B  ADDR  00D5H
 FE . . . . . . . . . . . . . . . . .  B  ADDR  009FH  NOT USED
 IE . . . . . . . . . . . . . . . . .  D  ADDR  00A8H
 IE0. . . . . . . . . . . . . . . . .  B  ADDR  0089H  NOT USED
 IE1. . . . . . . . . . . . . . . . .  B  ADDR  008BH  NOT USED
-INCREASELEFT . . . . . . . . . . . .  C  ADDR  0043H
-INCREASERIGHT. . . . . . . . . . . .  C  ADDR  0051H
+INCREASELEFT . . . . . . . . . . . .  C  ADDR  009DH
+INCREASERIGHT. . . . . . . . . . . .  C  ADDR  00ABH
 INIT . . . . . . . . . . . . . . . .  C  ADDR  0020H
 INT0 . . . . . . . . . . . . . . . .  B  ADDR  00B2H  NOT USED
 INT1 . . . . . . . . . . . . . . . .  B  ADDR  00B3H  NOT USED
@@ -256,15 +272,15 @@ IT1. . . . . . . . . . . . . . . . .  B  ADDR  008AH  NOT USED
 KBE. . . . . . . . . . . . . . . . .  D  ADDR  009DH  NOT USED
 KBF. . . . . . . . . . . . . . . . .  D  ADDR  009EH  NOT USED
 KBLS . . . . . . . . . . . . . . . .  D  ADDR  009CH  NOT USED
-LEDMULTI . . . . . . . . . . . . . .  C  ADDR  0080H
-LEDMULTI15LEFT . . . . . . . . . . .  C  ADDR  00BAH
-LEDMULTI15RIGHT. . . . . . . . . . .  C  ADDR  0099H
-LEDMULTI30LEFT . . . . . . . . . . .  C  ADDR  00C2H
-LEDMULTI30RIGHT. . . . . . . . . . .  C  ADDR  00A1H
-LEDMULTI40LEFT . . . . . . . . . . .  C  ADDR  00CAH
-LEDMULTI40RIGHT. . . . . . . . . . .  C  ADDR  00A9H
-LEDMULTIWINLEFT. . . . . . . . . . .  C  ADDR  00D2H
-LEDMULTIWINRIGHT . . . . . . . . . .  C  ADDR  00B1H
+LEDMULTI . . . . . . . . . . . . . .  C  ADDR  0084H
+LEDMULTI15LEFT . . . . . . . . . . .  C  ADDR  00DAH
+LEDMULTI15RIGHT. . . . . . . . . . .  C  ADDR  00B9H
+LEDMULTI30LEFT . . . . . . . . . . .  C  ADDR  00E2H
+LEDMULTI30RIGHT. . . . . . . . . . .  C  ADDR  00C1H
+LEDMULTI40LEFT . . . . . . . . . . .  C  ADDR  00EAH
+LEDMULTI40RIGHT. . . . . . . . . . .  C  ADDR  00C9H
+LEDMULTIWINLEFT. . . . . . . . . . .  C  ADDR  00F2H
+LEDMULTIWINRIGHT . . . . . . . . . .  C  ADDR  00D1H
 OSCCON . . . . . . . . . . . . . . .  D  ADDR  0086H  NOT USED
 OV . . . . . . . . . . . . . . . . .  B  ADDR  00D2H  NOT USED
 P. . . . . . . . . . . . . . . . . .  B  ADDR  00D0H  NOT USED
@@ -303,9 +319,9 @@ RCLK . . . . . . . . . . . . . . . .  B  ADDR  00CDH  NOT USED
 RD . . . . . . . . . . . . . . . . .  B  ADDR  00B7H  NOT USED
 REN. . . . . . . . . . . . . . . . .  B  ADDR  009CH  NOT USED
 RESET. . . . . . . . . . . . . . . .  C  ADDR  0000H  NOT USED
-RESETGAME. . . . . . . . . . . . . .  C  ADDR  003DH
+RESETGAME. . . . . . . . . . . . . .  C  ADDR  0058H
 RI . . . . . . . . . . . . . . . . .  B  ADDR  0098H  NOT USED
-RIGHTWIN . . . . . . . . . . . . . .  C  ADDR  00B6H
+RIGHTWIN . . . . . . . . . . . . . .  C  ADDR  00D6H
 RS0. . . . . . . . . . . . . . . . .  B  ADDR  00D3H  NOT USED
 RS1. . . . . . . . . . . . . . . . .  B  ADDR  00D4H  NOT USED
 RXD. . . . . . . . . . . . . . . . .  B  ADDR  00B0H  NOT USED
@@ -317,7 +333,7 @@ SADEN_0. . . . . . . . . . . . . . .  D  ADDR  00B9H  NOT USED
 SADEN_1. . . . . . . . . . . . . . .  D  ADDR  00BAH  NOT USED
 SBUF . . . . . . . . . . . . . . . .  D  ADDR  0099H  NOT USED
 SCON . . . . . . . . . . . . . . . .  D  ADDR  0098H  NOT USED
-SHOW . . . . . . . . . . . . . . . .  C  ADDR  005FH
+SHOW . . . . . . . . . . . . . . . .  C  ADDR  0063H
 SINT . . . . . . . . . . . . . . . .  C  ADDR  0023H  NOT USED
 SM0. . . . . . . . . . . . . . . . .  B  ADDR  009FH  NOT USED
 SM1. . . . . . . . . . . . . . . . .  B  ADDR  009EH  NOT USED
@@ -358,5 +374,5 @@ TXD. . . . . . . . . . . . . . . . .  B  ADDR  00B1H  NOT USED
 WDTCON . . . . . . . . . . . . . . .  D  ADDR  00A7H  NOT USED
 WDTPRG . . . . . . . . . . . . . . .  D  ADDR  00A7H  NOT USED
 WDTRST . . . . . . . . . . . . . . .  D  ADDR  00A6H  NOT USED
-WINLEFT. . . . . . . . . . . . . . .  C  ADDR  00D7H
+WINLEFT. . . . . . . . . . . . . . .  C  ADDR  00F7H
 WR . . . . . . . . . . . . . . . . .  B  ADDR  00B6H  NOT USED
