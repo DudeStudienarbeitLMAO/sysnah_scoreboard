@@ -15,16 +15,14 @@ mov tmod, #00000010b
 mov P1, #00010001b
 mov r7, #00h
 mov r6, #00h
-SETB P0.0
-SETB P0.1
-SETB P0.2
+mov P0, #00h
 
 checkPorts:
 acall show
 JB F0, buttonpressed
-MOV C,P0.0
-JC increaseleft
 MOV C,P0.1
+JC increaseleft
+MOV C,P0.0
 JC increaseright
 MOV C, P0.2
 JC resetgame

@@ -18,7 +18,7 @@ Fuer die Anzeige wurde ein Multiplex-LED-Display verwendet, welches folgende Eig
 \end{itemize}
 
 \subsection{Speicherstruktur}
-Hier einfuegen wie Spielstaende gespeichert werden, bitte, danke
+Die Speicherung des Spielstandes erfolgt in Port 1. Hierbei besitzt jeder Spieler 4 Bit, in denen Informationen zu seinem Punktstatus gespeichert werden können. Initialisert wird der Punktespeicher für jeden Spieler mit 0001. Wird dem Spieler ein Punkt gutgeschrieben so wird sein Teil des Port 1 auf 0011 gesetzt, sein Register wird auf den entsprechenden Wert von 15 gesetzt. Da für jeden Spieler die Zustände 0, 15, 30, 40 gespeichert werden müssen, genügt diese Codierung der Abbildung des Tennisspiels. 
 
 \subsection{Taster}
 Um das Scoreboard anzusteuern stehen dem Nutzer 3 Taster zur verfuegung, welche einem Punkt fuer den linken Spieler, dem rechten Spieler und einer Reset-Taste entsprechen. Da in der Simulationsumgebung leider keine Druckknoepfe sondern nur Schalter gibt, muss der Nutzer hier den Schalter eigenstaendig Ein- und wieder Ausschalten.
@@ -27,3 +27,8 @@ Um das Scoreboard anzusteuern stehen dem Nutzer 3 Taster zur verfuegung, welche 
 Da es nicht vom Nutzer erwartet werde kann, dass er es schafft, Taktgenau zwischen einzelnen Ueberpruefungen des Tasterstatus die Taste zu betaetigen, wurde eine Routine implementiert, um bei laengerer Tasterbetaetigung keine Mehrfachzaehlungen zu beguenstigen.
 
 \section{Programmentwurf}
+Für die Planung des Programms haben wir uns dse sogenannte Nassi-Schneidermann Diagramms bedient. Dies brachte den Vorteil mit sich, dass der Programmentwurf einfach in Assembler umzusetzen war. Hierzu verwendeten wir eine Methodenschreibweise welche eher in objektorientierten Sprachen verwendet wird, um eine bessere Lesbarkeit zu sichern.
+\includegraphics{img/buttonpressed}
+\includegraphics{img/checkPorts}
+\includegraphics{img/increaseleft}
+Für die Punktevergabelogik haben wir nun den Entwurf von increaseleft angefertigt, da sich für die Implementierung von increaseright nur die Bits innerhalb des Ports geändert haben. 

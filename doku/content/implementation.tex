@@ -39,7 +39,25 @@ JC buttonpressed
 CLR F0
 JMP checkports
 \end{lstlisting}
-Auch hier, da es eine Routine ist die potentiell fuer eine Laengere Zeit durchlaufen wird, wird zu beginn der momentane Punktestand ausgegeben. Daraufhin wird ueberprueft, ob einer der drei Taster noch immer gedrueckt, also auf 1 gesetzt, ist. Sollte dies der Fall sein, beginnt die Routine erneut.\\
+Auch hier, da es eine Routine ist die potentiell fuer eine Laengere Zeit durchlaufen wird, wird zu Beginn der momentane Punktestand ausgegeben. Daraufhin wird ueberprueft, ob einer der drei Taster noch immer gedrueckt, also auf 1 gesetzt, ist. Sollte dies der Fall sein, beginnt die Routine erneut.\\
 Werden alle Faelle durchlaufen, wird der Wert des Flag-0 (F0), welcher in dieser Implementierung dem Taster-Status entspricht, zurueck auf 0 gesetzt und das Programm springt zurueck in die Hauptroutine, "checkports", um ein weiterfuehren der Funktionalitaeten zu ermoeglichen.
 
-\subsection{Show und Increase}
+\subsection{Increase}
+Increaseleft beziehungsweise increaseright sind die beiden Routinen die dazu verwendet werden Spieler 1 oder 2 einen Punkt gut zu schreiben. Exemplarisch soll hier nun increaseleft betrachtet werden.
+\begin{lstlisting}
+increaseleft:
+JB P1.7, ledmultiwinleft
+JB P1.6, ledmulti40left
+JB P1.5, ledmulti30left
+JB P1.4, ledmulti15left
+acall checkPorts
+\end{lstlisting}
+Bei dem Entwurf der increase Routine war es wichtig darauf zu achten, in umgekehrter Reihenfolge die Bits zu prüfen, d.h. zunächst das Bit für den Sieg, dann das Bit für 40 Punkte, das Bit für 30 Punkte usw. Würde man die Prüfung in umgekehrter Reihenfolge vornehmen, würden mit der Codierungslogik innerhalb von Port 1 immer nur 15 Punkte festgeschrieben werden und die increase Routine würde verlassen werden. 
+\begin{lstlisting}
+ledmulti15left:
+SETB P1.5
+mov R7, #0fh
+SETB F0
+acall checkPorts
+\end{lstlisting}
+Innerhalb der jeweiligen Routine für den Punktestand wird das entsprechende Bit in Port 1 gesetzt, der Punktestand des Spielers aktualisiert und das Bit gesetzt, welches anzeigt, dass der Button zur Punktevergütung betätigt wurde. 
